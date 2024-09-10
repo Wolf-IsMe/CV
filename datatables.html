@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datatables</title>
+
+    <!-- BOOTSTRAP 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+
+    <style>
+      .header {
+        display: flex;
+        justify-content: center;
+        margin: 2rem;
+      }
+      .bottom {
+        margin-top: 20px;
+      }
+
+      .dt-paging {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .dt-info {
+        margin-top: 20px;
+      }
+
+      .checkbox-column {
+        display: flex;
+        align-items: center;
+        margin-right: 12px;
+        padding-bottom: 12px;
+        border-bottom: 2px #c4c4c4 solid;
+      }
+
+      .btn-outline-primary {
+        background-color: #20b2aa !important; /* Darker shade for hover effect */
+        border: none;
+        color: #444;
+      }
+      .btn-outline-primary:hover {
+        background-color: #228b22 !important; /* Darker shade for hover effect */
+        color: #fff !important;
+      }
+
+      .table {
+        width: 100% !important;
+        table-layout: fixed;
+      }
+
+      span.dt-column-title input {
+        width: 100px !important;
+      }
+
+      span.dt-column-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header"><h1>My DataTable</h1></div>
+    <div class="container-fluid">
+      <div class="container-fluid mt-5">
+        <div class="mb-3 checkbox-column">
+          <h4>Manage Columns</h4>
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showName" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showName">Name</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showPosition" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showPosition"
+              >Position</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showOffice" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showOffice">Office</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showAge" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showAge"
+              >Days Worked</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showStartDate" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showStartDate"
+              >Hired</label
+            >
+          </div>
+          <div class="form-check">
+            <input class="form-check-input btn-check" type="checkbox" id="showSalary" checked />
+            <label class="form-check-label btn btn-outline-primary" for="showSalary"
+              >Daily Rate</label
+            >
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input btn-check"
+              type="checkbox"
+              id="showSalaryRange"
+              checked
+            />
+            <label class="form-check-label btn btn-outline-primary" for="showSalaryRange"
+              >Monthly Pay</label
+            >
+          </div>
+        </div>
+        <ul class="nav nav-pills d-flex justify-content-center" id="tableTabs" role="tablist">
+          <li class="nav-item me-3">
+            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#table1" role="tab"
+              >Table 1</a
+            >
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#table2" role="tab">Table 2</a>
+          </li>
+        </ul>
+        <div class="tab-content mt-3 overflow-auto">
+          <div class="tab-pane fade show active" id="table1" role="tabpanel">
+            <button id="deleteButton1" class="delete-btn btn btn-danger mt-3">
+              Delete Selected
+            </button>
+            <table id="example1" class="table table-striped" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>
+                    Name
+                    <input type="text" id="nameSearch" placeholder="Search Name" />
+                  </th>
+                  <th>
+                    Position
+                    <input type="text" id="positionSearch" placeholder="Search Position" />
+                  </th>
+                  <th>
+                    Office
+                    <input type="text" id="officeSearch" placeholder="Search Office" />
+                  </th>
+                  <th>
+                    Days Worked
+                    <input type="text" id="ageSearch" placeholder="Search Age" />
+                  </th>
+                  <th>
+                    Hired
+                    <input type="text" id="startDateSearch" placeholder="Search Start Date" />
+                  </th>
+                  <th>
+                    Daily Rate
+                    <input type="text" id="salarySearch" placeholder="Search Salary" />
+                  </th>
+                  <th>
+                    Monthly Pay
+                    <input type="text" id="salaryRangeSearch" placeholder="Search Salary Range" />
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tab-pane fade overflow-auto" id="table2" role="tabpanel">
+            <button id="deleteButton2" class="delete-btn btn btn-danger mt-3">
+              Delete Selected
+            </button>
+            <table
+              id="example2"
+              class="table table-dark table-borderless overflow-auto"
+              style="width: 100%"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    Name
+                    <input type="text" id="nameSearch" placeholder="Search Name" />
+                  </th>
+                  <th>
+                    Position
+                    <input type="text" id="positionSearch" placeholder="Search Position" />
+                  </th>
+                  <th>
+                    Office
+                    <input type="text" id="officeSearch" placeholder="Search Office" />
+                  </th>
+                  <th>
+                    Days Worked
+                    <input type="text" id="ageSearch" placeholder="Search Age" />
+                  </th>
+                  <th>
+                    Hired
+                    <input type="text" id="startDateSearch" placeholder="Search Start Date" />
+                  </th>
+                  <th>
+                    Daily Rate
+                    <input type="text" id="salarySearch" placeholder="Search Salary" />
+                  </th>
+                  <th>
+                    Monthly Pay<input
+                      type="text"
+                      id="salaryRangeSearch"
+                      placeholder="Search Salary Range"
+                    />
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit Row</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="editName" />
+            </div>
+            <div class="mb-3">
+              <label for="editPosition" class="form-label">Position</label>
+              <input type="text" class="form-control" id="editPosition" />
+            </div>
+            <div class="mb-3">
+              <label for="editOffice" class="form-label">Office</label>
+              <input type="text" class="form-control" id="editOffice" />
+            </div>
+            <div class="mb-3">
+              <label for="editAge" class="form-label">Days Worked</label>
+              <input type="number" class="form-control" id="editAge" />
+            </div>
+            <div class="mb-3">
+              <label for="editStartDate" class="form-label">Start date</label>
+              <input type="date" class="form-control" id="editStartDate" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    function initializeDataTable(selector) {
+      const table = $(selector).DataTable({
+        ajax: 'ajax.json',
+        searching: true,
+        responsive: true,
+        dom: '<"top"p>rt<"bottom"li><"clear">',
+        columns: [
+          { data: 0, orderable: false }, // Name
+          { data: 1, orderable: false }, // Position
+          { data: 2, orderable: false }, // Office
+          { data: 3, orderable: false }, // Days Worked
+          { data: 4, orderable: false }, // Hired
+
+          {
+            orderable: false,
+            render: function (data, type, row) {
+              let job_title = row[1];
+              let city = row[2];
+              let daily_rate = calculateDailyRate(job_title, city);
+              return '₱' + daily_rate.toString();
+            },
+          },
+
+          {
+            orderable: false,
+            render: function (data, type, row) {
+              let job_title = row[1];
+              let city = row[2];
+              let daily_rate = calculateDailyRate(job_title, city);
+              let monthly_pay = daily_rate * 22;
+              return '₱' + monthly_pay.toFixed(2);
+            },
+          },
+          {
+            orderable: false,
+            render: function () {
+              return `<button class="btn btn-warning btn-sm edit-btn">Edit</button>`;
+            },
+          },
+        ],
+        lengthMenu: [7, 10, 25, 50, 100], // Pagination options
+      });
+
+      // HANDLE SELECT
+      table.on('click', 'tbody tr', function (e) {
+        e.currentTarget.classList.toggle('selected');
+      });
+
+      // HANDLE EDIT
+      $(selector).on('click', '.edit-btn', function () {
+        const row = table.row($(this).parents('tr'));
+        const rowData = row.data();
+
+        // Fill the modal form with row data
+        $('#editName').val(rowData[0]);
+        $('#editPosition').val(rowData[1]);
+        $('#editOffice').val(rowData[2]);
+        $('#editAge').val(rowData[3]);
+        $('#editStartDate').val(rowData[4]);
+
+        // Show the modal
+        $('#editModal').modal('show');
+
+        // Save the changes
+        $('#saveChanges')
+          .off('click')
+          .on('click', function () {
+            // Get updated data from modal form
+            const updatedData = [
+              $('#editName').val(),
+              $('#editPosition').val(),
+              $('#editOffice').val(),
+              $('#editAge').val(),
+              $('#editStartDate').val(),
+            ];
+
+            // Update the row and redraw
+            row.data(updatedData).draw();
+
+            // Hide the modal
+            $('#editModal').modal('hide');
+          });
+      });
+
+      // HANDLE SEARCH PER COL
+      $(selector + ' thead input').on('keyup change', function () {
+        let colIndex = $(this).closest('th').index();
+        table.column(colIndex).search(this.value).draw();
+      });
+
+      // SHOW / HIDE COL
+      $('#showName').on('change', function () {
+        toggleColumnVisibility(table, 0, this.checked); // Show/hide Name column
+      });
+
+      $('#showPosition').on('change', function () {
+        toggleColumnVisibility(table, 1, this.checked); // Show/hide Position column
+      });
+
+      $('#showOffice').on('change', function () {
+        toggleColumnVisibility(table, 2, this.checked);
+      });
+
+      $('#showAge').on('change', function () {
+        toggleColumnVisibility(table, 3, this.checked);
+      });
+
+      $('#showStartDate').on('change', function () {
+        toggleColumnVisibility(table, 4, this.checked);
+      });
+
+      $('#showSalary').on('change', function () {
+        toggleColumnVisibility(table, 5, this.checked);
+      });
+
+      $('#showSalaryRange').on('change', function () {
+        toggleColumnVisibility(table, 6, this.checked);
+      });
+
+      return table;
+    }
+
+    function toggleColumnVisibility(table, columnIndex, isVisible) {
+      table.column(columnIndex).visible(isVisible);
+    }
+
+    const table1 = initializeDataTable('#example1');
+    const table2 = initializeDataTable('#example2');
+
+    function deleteSelectedRow(table) {
+      const selectedRows = $(table.table().container()).find('tbody tr.selected');
+      if (selectedRows.length === 0) {
+        alert('No rows selected!');
+        return;
+      }
+      if (
+        confirm('Are you sure you want to delete the selected ' + selectedRows.length + ' rows?')
+      ) {
+        selectedRows.each(function () {
+          table.row(this).remove().draw(false);
+        });
+      }
+    }
+
+    $('#deleteButton1').on('click', function () {
+      deleteSelectedRow(table1);
+    });
+
+    $('#deleteButton2').on('click', function () {
+      deleteSelectedRow(table2);
+    });
+
+    function calculateDailyRate(job_title, city) {
+      const job_title_rate = {
+        'System Architect': 55,
+        Accountant: 38,
+        'Junior Technical Author': 30,
+        'Senior Javascript Developer': 70,
+        'Integration Specialist': 45,
+        'Sales Assistant': 28,
+        'Javascript Developer': 50,
+        'Software Engineer': 56,
+        'Office Manager': 40,
+        'Support Lead': 42,
+        'Regional Director': 80,
+        'Senior Marketing Designer': 65,
+        'Marketing Designer': 55,
+        'Chief Financial Officer (CFO)': 90,
+        'Systems Administrator': 52,
+        'Personnel Lead': 60,
+        'Development Lead': 75,
+        'Chief Marketing Officer (CMO)': 85,
+        'Pre-Sales Support': 50,
+        'Chief Executive Officer (CEO)': 100,
+        'Regional Marketing': 48,
+        'Technical Author': 37,
+        'Team Leader': 63,
+        'Post-Sales support': 40,
+        Secretary: 30,
+        'Financial Controller': 70,
+        Director: 85,
+        'Support Engineer': 50,
+        'Data Coordinator': 47,
+        'Customer Support': 35,
+        'Junior Javascript Developer': 32,
+      };
+
+      const country_rate = {
+        Edinburgh: 5,
+        Tokyo: 8,
+        'San Francisco': 7,
+        'New York': 6,
+        Sydney: 9,
+        London: 6,
+        Singapore: 7,
+      };
+
+      let job_title_value = job_title_rate[job_title];
+      let city_value = country_rate[city];
+      let daily_rate = 0;
+
+      if (job_title_value !== undefined && city_value !== undefined) {
+        daily_rate = job_title_value * city_value;
+      }
+
+      return daily_rate;
+    }
+  </script>
+</html>
